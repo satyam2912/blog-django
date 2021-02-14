@@ -6,7 +6,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 # Create your views here.
 def home(request):
-    return render(request,'home/home.html')
+    allPosts = BlogPost.objects.all()[:2]
+    somepost = BlogPost.objects.all()[2:4]
+    context = {'allPosts':allPosts,'somepost':somepost}
+    return render(request,'home/home.html',context)
 
 def contact(request):
     if request.method == 'POST':
@@ -14,10 +17,8 @@ def contact(request):
         email = request.POST['email']
         phone = request.POST['phone']
         content = request.POST['content']
-        print("post")
         contact = Contact(name=name,email=email,phone=phone,content=content)
         contact.save()
-        print
 
     return render(request,'home/contact.html')
 
